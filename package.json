@@ -1,0 +1,29 @@
+{
+  "name": "diceman",
+  "version": "0.0.0",
+  "description": "Random Item Picker - HipChat Integration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JakeSidSmith/diceman"
+  },
+  "keywords": [
+    "dice",
+    "diceman",
+    "random",
+    "pick",
+    "picker",
+    "select",
+    "selector"
+  ],
+  "author": "Jake 'Sid' Smith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JakeSidSmith/diceman/issues"
+  },
+  "homepage": "https://github.com/JakeSidSmith/diceman"
+}
