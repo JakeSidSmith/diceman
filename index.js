@@ -23,12 +23,27 @@ curl --data 'stuff=hello' http://localhost:8085
 
       request.on('data', function (data) {
         json = JSON.parse(data.toString());
-
         console.log('JSON:', json);
 
+        var message = json.item ? json.item.message : undefined;
+
         response.writeHead(200, {'Content-Type': 'text/json'});
-        response.write('{"color": "green", "message": "' + json.item.message + '", "notify": false, "message_format": "text"}');
-        response.end('post received');
+        if (message) {
+          var items = message.split(',');
+
+          if (items.length) {
+            for (var i = 0; i < items.length; i += 1) {
+              items[0] = items[0].replace(/(^\s+)|(\s+$)/g, '');
+            }
+
+            response.write('{"color": "green", "message": "' + items[0] + '", "notify": false, "message_format": "text"}');
+          } else {
+            response.write('{"color": "red", "message": "Error: No items supplied.", "notify": false, "message_format": "text"}');
+          }
+        } else {
+          response.write('{"color": "red", "message": "Error: No message supplied.", "notify": false, "message_format": "text"}');
+        }
+        response.end();
       });
 
       request.on('end', function () {
