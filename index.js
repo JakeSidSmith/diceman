@@ -16,6 +16,10 @@ curl --data 'stuff=hello' http://localhost:8085
 
   var port = 8085;
 
+  var pickRandom = function (list) {
+    return list[parseInt(Math.random() * list.length)];
+  };
+
   var server = http.createServer(function (request, response) {
     if (request.method === 'POST') {
       console.log('POST');
@@ -29,6 +33,7 @@ curl --data 'stuff=hello' http://localhost:8085
 
         response.writeHead(200, {'Content-Type': 'text/json'});
         if (message) {
+          message = message.replace('/diceman', '').replace(/(^\s+)|(\s+$)/g, '');
           var items = message.split(',');
 
           if (items.length) {
@@ -36,7 +41,7 @@ curl --data 'stuff=hello' http://localhost:8085
               items[0] = items[0].replace(/(^\s+)|(\s+$)/g, '');
             }
 
-            response.write('{"color": "green", "message": "' + items[0] + '", "notify": false, "message_format": "text"}');
+            response.write('{"color": "green", "message": "' + pickRandom(items) + '", "notify": false, "message_format": "text"}');
           } else {
             response.write('{"color": "red", "message": "Error: No items supplied.", "notify": false, "message_format": "text"}');
           }
@@ -49,12 +54,6 @@ curl --data 'stuff=hello' http://localhost:8085
       request.on('end', function () {
         console.log('End');
       });
-
-      /*
-      response.writeHead(200, {'Content-Type': 'text/json'});
-      response.write('{"color": "green","message": "' + message + '","notify": false,"message_format": "text"}');
-      response.end();
-      */
     } else {
       response.writeHead(200, {'Content-Type': 'text/html'});
       response.write('<!DOCTYPE html>');
