@@ -4,9 +4,7 @@
 Testing the server
 --------
 
-Change port to 8085 (or other free port) and run the following command (replacing port number if necessary)
-
-curl --data 'stuff=hello' http://localhost:8085
+curl --data '{"item": {"message": {"message": "this,is,a,message"}}}}' http://localhost:5000
 */
 
 
@@ -31,9 +29,12 @@ curl --data 'stuff=hello' http://localhost:8085
 
         var message = json.item ? (json.item.message ? json.item.message.message : undefined) : undefined;
 
+        if (message) {
+          message = message.replace(/^\/diceman/, '').replace(/(^\s+)|(\s+$)/g, '');
+        }
+
         response.writeHead(200, {'Content-Type': 'text/json'});
         if (message) {
-          message = message.replace('/diceman', '').replace(/(^\s+)|(\s+$)/g, '');
           var items = message.split(',');
 
           if (items.length) {
