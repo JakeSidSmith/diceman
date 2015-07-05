@@ -29,7 +29,7 @@ curl --data 'stuff=hello' http://localhost:8085
         json = JSON.parse(data.toString());
         console.log('JSON:', json);
 
-        var message = json.item ? json.item.message : undefined;
+        var message = json.item ? (json.item.message ? json.item.message.message : undefined) : undefined;
 
         response.writeHead(200, {'Content-Type': 'text/json'});
         if (message) {
