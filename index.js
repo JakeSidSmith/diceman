@@ -17,7 +17,7 @@ curl --data 'stuff=hello' http://localhost:8085
   var port = process.env.PORT || 5000;
 
   var pickRandom = function (list) {
-    return list[parseInt(Math.random() * list.length)];
+    return list[Math.floor(Math.random() * list.length)];
   };
 
   var server = http.createServer(function (request, response) {
