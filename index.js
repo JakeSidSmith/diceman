@@ -14,7 +14,7 @@ curl --data 'stuff=hello' http://localhost:8085
 
   var http = require('http');
 
-  var port = 8085;
+  var port = process.env.PORT || 5000;
 
   var pickRandom = function (list) {
     return list[parseInt(Math.random() * list.length)];
