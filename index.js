@@ -18,6 +18,14 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}}' http://lo
     return list[Math.floor(Math.random() * list.length)];
   };
 
+  var stripWhitespace = function (text) {
+    return text.replace(/(^\s+)|(\s+$)/g, '');
+  };
+
+  var stringDiceman = function (text) {
+    return text.replace(/^\/diceman/, '');
+  };
+
   var server = http.createServer(function (request, response) {
     if (request.method === 'POST') {
       console.log('POST');
@@ -30,27 +38,37 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}}' http://lo
         var message = json.item ? (json.item.message ? json.item.message.message : undefined) : undefined;
 
         if (message) {
-          message = message.replace(/^\/diceman/, '').replace(/(^\s+)|(\s+$)/g, '');
+          message = stripWhitespace(stringDiceman(message));
         }
 
         response.writeHead(200, {'Content-Type': 'text/json'});
         if (message) {
+          var question;
           var items = message.split(',');
+
+          var questionIndex = message.indexOf('?');
+
+          if (questionIndex >= 0) {
+            question = stripWhitespace(message.substring(0, questionIndex + 1));
+          }
 
           if (items.length) {
             var finalItems = [];
 
             for (var i = 0; i < items.length; i += 1) {
-              var strippedItem = items[0].replace(/(^\s+)|(\s+$)/g, '');
+              var strippedItem = stripWhitespace(items[0]);
               if (strippedItem && strippedItem.length) {
                 finalItems.push(strippedItem);
               }
             }
             if (!finalItems.length) {
               response.write('{"color": "red", "message": "Error: No items supplied.", "notify": false, "message_format": "text"}');
-            } else if (finalItems.length === 1 && finalItems[0].length > 0 && finalItems[0].substring(finalItems[0].length - 1, finalItems[0].length) === '?') {
+            } else if (finalItems.length === 1 && question && question === finalItems[0]) {
               response.write('{"color": "green", "message": "' + pickRandom(['Yes', 'No']) + '", "notify": false, "message_format": "text"}');
             } else {
+              if (question && finalItems[0].indexOf(question) === 0) {
+                finalItems[0] = stripWhitespace(finalItems[0].replace(question, ''));
+              }
               response.write('{"color": "green", "message": "' + pickRandom(finalItems) + '", "notify": false, "message_format": "text"}');
             }
           } else {
