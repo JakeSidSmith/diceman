@@ -4,7 +4,7 @@
 Testing the server
 --------
 
-curl --data '{"item": {"message": {"message": "this,is,a,message"}}}}' http://localhost:5000
+curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://localhost:5000
 */
 
 
@@ -56,7 +56,7 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}}' http://lo
             var finalItems = [];
 
             for (var i = 0; i < items.length; i += 1) {
-              var strippedItem = stripWhitespace(items[0]);
+              var strippedItem = stripWhitespace(items[i]);
               if (strippedItem && strippedItem.length) {
                 finalItems.push(strippedItem);
               }
