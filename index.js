@@ -38,11 +38,21 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}}' http://lo
           var items = message.split(',');
 
           if (items.length) {
-            for (var i = 0; i < items.length; i += 1) {
-              items[0] = items[0].replace(/(^\s+)|(\s+$)/g, '');
-            }
+            var finalItems = [];
 
-            response.write('{"color": "green", "message": "' + pickRandom(items) + '", "notify": false, "message_format": "text"}');
+            for (var i = 0; i < items.length; i += 1) {
+              var strippedItem = items[0].replace(/(^\s+)|(\s+$)/g, '');
+              if (strippedItem && strippedItem.length) {
+                finalItems.push(strippedItem);
+              }
+            }
+            if (!finalItems.length) {
+              response.write('{"color": "red", "message": "Error: No items supplied.", "notify": false, "message_format": "text"}');
+            } else if (finalItems.length === 1 && finalItems[0].length > 0 && finalItems[0].substring(finalItems[0].length - 1, finalItems[0].length) === '?') {
+              response.write('{"color": "green", "message": "' + pickRandom(['Yes', 'No']) + '", "notify": false, "message_format": "text"}');
+            } else {
+              response.write('{"color": "green", "message": "' + pickRandom(finalItems) + '", "notify": false, "message_format": "text"}');
+            }
           } else {
             response.write('{"color": "red", "message": "Error: No items supplied.", "notify": false, "message_format": "text"}');
           }
