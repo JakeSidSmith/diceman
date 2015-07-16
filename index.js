@@ -22,7 +22,7 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}}' http://lo
     return text.replace(/(^\s+)|(\s+$)/g, '');
   };
 
-  var stringDiceman = function (text) {
+  var stripDiceman = function (text) {
     return text.replace(/^\/diceman/, '');
   };
 
@@ -38,7 +38,7 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}}' http://lo
         var message = json.item ? (json.item.message ? json.item.message.message : undefined) : undefined;
 
         if (message) {
-          message = stripWhitespace(stringDiceman(message));
+          message = stripWhitespace(stripDiceman(message));
         }
 
         response.writeHead(200, {'Content-Type': 'text/json'});
