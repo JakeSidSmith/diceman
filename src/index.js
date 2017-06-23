@@ -11,32 +11,9 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
 
   var http = require('http');
   var responses = require('./responses');
+  var utils = require('./utils');
 
   var port = process.env.PORT || 5000;
-
-  function getIn (obj, path, defaultValue) {
-    if (path.length) {
-      if (typeof obj === 'undefined') {
-        obj = {};
-      }
-
-      getIn(obj[path.pop()], path, defaultValue);
-    }
-
-    return typeof obj === 'undefined' ? defaultValue : obj;
-  }
-
-  function pickRandom (list) {
-    return list[Math.floor(Math.random() * list.length)];
-  }
-
-  function stripWhitespace (text) {
-    return text.replace(/(^\s+)|(\s+$)/g, '');
-  }
-
-  function stripDiceman (text) {
-    return text.replace(/^\/diceman/, '');
-  }
 
   var server = http.createServer(function (request, response) {
     if (request.method === 'POST') {
@@ -45,10 +22,10 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
         var json = JSON.parse(data.toString());
         console.log('JSON:', json);
 
-        var message = getIn(json, ['item', 'message', 'message']);
+        var message = utils.getIn(json, ['item', 'message', 'message'], '');
 
         if (message) {
-          message = stripWhitespace(stripDiceman(message));
+          message = utils.stripWhitespace(utils.stripDiceman(message));
         }
 
         if (message) {
@@ -58,14 +35,14 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
           var questionIndex = message.indexOf('?');
 
           if (questionIndex >= 0) {
-            question = stripWhitespace(message.substring(0, questionIndex + 1));
+            question = utils.stripWhitespace(message.substring(0, questionIndex + 1));
           }
 
           if (items.length) {
             var finalItems = [];
 
             for (var i = 0; i < items.length; i += 1) {
-              var strippedItem = stripWhitespace(items[i]);
+              var strippedItem = utils.stripWhitespace(items[i]);
               if (strippedItem && strippedItem.length) {
                 finalItems.push(strippedItem);
               }
@@ -73,13 +50,13 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
             if (!finalItems.length) {
               responses.errorResponse(response, 'No items supplied.');
             } else if (finalItems.length === 1 && question && question === finalItems[0]) {
-              responses.successResponse(response, pickRandom(['Yes', 'No']));
+              responses.successResponse(response, utils.pickRandom(['Yes', 'No']));
             } else {
               if (question && finalItems[0].indexOf(question) === 0) {
-                finalItems[0] = stripWhitespace(finalItems[0].replace(question, ''));
+                finalItems[0] = utils.stripWhitespace(finalItems[0].replace(question, ''));
               }
 
-              responses.successResponse(response, pickRandom(finalItems));
+              responses.successResponse(response, utils.pickRandom(finalItems));
             }
           } else {
             responses.errorResponse(response, 'No items supplied.');
