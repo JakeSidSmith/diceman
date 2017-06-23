@@ -71,20 +71,46 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
               }
             }
             if (!finalItems.length) {
-              response.write('{"color": "red", "message": "Error: No items supplied.", "notify": false, "message_format": "text"}');
+              response.write(JSON.stringify({
+                'color': 'red',
+                'message': 'Error: No items supplied.',
+                'notify': false,
+                'message_format': 'text'
+              }));
             } else if (finalItems.length === 1 && question && question === finalItems[0]) {
-              response.write('{"color": "green", "message": "' + pickRandom(['Yes', 'No']) + '", "notify": false, "message_format": "text"}');
+              response.write(JSON.stringify({
+                'color': 'green',
+                'message': pickRandom(['Yes', 'No']),
+                'notify': false,
+                'message_format': 'text'
+              }));
             } else {
               if (question && finalItems[0].indexOf(question) === 0) {
                 finalItems[0] = stripWhitespace(finalItems[0].replace(question, ''));
               }
-              response.write('{"color": "green", "message": "' + pickRandom(finalItems) + '", "notify": false, "message_format": "text"}');
+
+              response.write(JSON.stringify({
+                'color': 'green',
+                'message': pickRandom(finalItems),
+                'notify': false,
+                'message_format': 'text'
+              }));
             }
           } else {
-            response.write('{"color": "red", "message": "Error: No items supplied.", "notify": false, "message_format": "text"}');
+            response.write(JSON.stringify({
+              'color': 'red',
+              'message': 'Error: No items supplied.',
+              'notify': false,
+              'message_format': 'text'
+            }));
           }
         } else {
-          response.write('{"color": "red", "message": "Error: No message supplied.", "notify": false, "message_format": "text"}');
+          response.write(JSON.stringify({
+            'color': 'red',
+            'message': 'Error: No message supplied.',
+            'notify': false,
+            'message_format': 'text'
+          }));
         }
         response.end();
       });
