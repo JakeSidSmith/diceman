@@ -7,35 +7,44 @@ Testing the server
 curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://localhost:5000
 */
 
-
 (function () {
 
   var http = require('http');
 
   var port = process.env.PORT || 5000;
 
-  var pickRandom = function (list) {
+  function getIn (obj, path, defaultValue) {
+    if (path.length) {
+      if (typeof obj === 'undefined') {
+        obj = {};
+      }
+
+      getIn(obj[path.pop()], path, defaultValue);
+    }
+
+    return typeof obj === 'undefined' ? defaultValue : obj;
+  }
+
+  function pickRandom (list) {
     return list[Math.floor(Math.random() * list.length)];
-  };
+  }
 
-  var stripWhitespace = function (text) {
+  function stripWhitespace (text) {
     return text.replace(/(^\s+)|(\s+$)/g, '');
-  };
+  }
 
-  var stripDiceman = function (text) {
+  function stripDiceman (text) {
     return text.replace(/^\/diceman/, '');
-  };
+  }
 
   var server = http.createServer(function (request, response) {
     if (request.method === 'POST') {
       console.log('POST');
-      var json;
-
       request.on('data', function (data) {
-        json = JSON.parse(data.toString());
+        var json = JSON.parse(data.toString());
         console.log('JSON:', json);
 
-        var message = json.item ? (json.item.message ? json.item.message.message : undefined) : undefined;
+        var message = getIn(json, ['item', 'message', 'message']);
 
         if (message) {
           message = stripWhitespace(stripDiceman(message));
