@@ -10,6 +10,7 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
 (function () {
 
   var http = require('http');
+  var responses = require('./responses');
 
   var port = process.env.PORT || 5000;
 
@@ -50,7 +51,6 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
           message = stripWhitespace(stripDiceman(message));
         }
 
-        response.writeHead(200, {'Content-Type': 'text/json'});
         if (message) {
           var question;
           var items = message.split(',');
@@ -71,65 +71,29 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
               }
             }
             if (!finalItems.length) {
-              response.write(JSON.stringify({
-                'color': 'red',
-                'message': 'Error: No items supplied.',
-                'notify': false,
-                'message_format': 'text'
-              }));
+              responses.errorResponse(response, 'No items supplied.');
             } else if (finalItems.length === 1 && question && question === finalItems[0]) {
-              response.write(JSON.stringify({
-                'color': 'green',
-                'message': pickRandom(['Yes', 'No']),
-                'notify': false,
-                'message_format': 'text'
-              }));
+              responses.successResponse(response, pickRandom(['Yes', 'No']));
             } else {
               if (question && finalItems[0].indexOf(question) === 0) {
                 finalItems[0] = stripWhitespace(finalItems[0].replace(question, ''));
               }
 
-              response.write(JSON.stringify({
-                'color': 'green',
-                'message': pickRandom(finalItems),
-                'notify': false,
-                'message_format': 'text'
-              }));
+              responses.successResponse(response, pickRandom(finalItems));
             }
           } else {
-            response.write(JSON.stringify({
-              'color': 'red',
-              'message': 'Error: No items supplied.',
-              'notify': false,
-              'message_format': 'text'
-            }));
+            responses.errorResponse(response, 'No items supplied.');
           }
         } else {
-          response.write(JSON.stringify({
-            'color': 'red',
-            'message': 'Error: No message supplied.',
-            'notify': false,
-            'message_format': 'text'
-          }));
+          responses.errorResponse(response, 'No message supplied.');
         }
-        response.end();
       });
 
       request.on('end', function () {
         console.log('End');
       });
     } else {
-      response.writeHead(200, {'Content-Type': 'text/html'});
-      response.write('<!DOCTYPE html>');
-      response.write('<html>');
-      response.write('<head>');
-      response.write('<title>Hello World Page</title>');
-      response.write('</head>');
-      response.write('<body>');
-      response.write('Hello World!');
-      response.write('</body>');
-      response.write('</html>');
-      response.end();
+      responses.getResponse(response);
     }
   });
 
