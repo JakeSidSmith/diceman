@@ -54,7 +54,7 @@
     }
 
     var value = obj[pathCopy.shift()];
-    return typeof value === 'undefined' ? defaultValue : value;
+    return getDefault(value, defaultValue);
   }
 
   module.exports = {
