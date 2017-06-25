@@ -1,4 +1,4 @@
-# Diceman
+# Diceman [![CircleCI](https://circleci.com/gh/JakeSidSmith/diceman/tree/master.svg?style=svg)](https://circleci.com/gh/JakeSidSmith/diceman/tree/master)
 **Random Item Picker - HipChat Integration**
 
 ## Deployment & integration
