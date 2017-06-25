@@ -17,10 +17,13 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
   var port = process.env.PORT || 5000;
 
   var server = http.createServer(function (request, response) {
+    console.log('Request method:', request.method);
+
     if (request.method === 'POST') {
-      console.log('POST');
+
       request.on('data', function (data) {
         var json = JSON.parse(data.toString());
+
         console.log('JSON:', json);
 
         var message = utils.getIn(json, ['item', 'message', 'message'], '');
@@ -37,6 +40,7 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
       request.on('end', function () {
         console.log('End');
       });
+
     } else {
       responses.nonPostResponse(response);
     }
