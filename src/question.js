@@ -11,7 +11,7 @@
   var MATCHES_QUESTION = /.*?\?$/;
 
   var MATCHES_QUESTION_MARK = /\?/g;
-  var MATCHES_OPTIONS_SEPARATOR = /\s*(?:,?\s*?(?:or|and)|,)\s*/g;
+  var MATCHES_OPTIONS_SEPARATOR = /\s*(?:,?\s*?(?:or|and)|,)\s*/gi;
 
   function getResponse (message) {
     message = (message || '')
@@ -39,7 +39,7 @@
     }
 
     return {
-      message: utils.pickRandom(options)
+      message: utils.capitalize(utils.pickRandom(options))
     };
   }
 

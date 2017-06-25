@@ -61,6 +61,14 @@
         expect(question.getResponse('Which number?1,2,3,4')).toEqual({message: '4'});
       });
 
+      it('should capitalize answers', function () {
+        expect(question.getResponse('one, two or three')).toEqual({message: 'One'});
+
+        mockRandom(0.99);
+
+        expect(question.getResponse('one, two or three')).toEqual({message: 'Three'});
+      });
+
     });
 
   });

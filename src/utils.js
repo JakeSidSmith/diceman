@@ -10,6 +10,11 @@
     return list[Math.floor(Math.random() * list.length)];
   }
 
+  function capitalize (string) {
+    string = string || '';
+    return string.charAt(0).toUpperCase() + string.substring(1);
+  }
+
   function setIn (obj, path, value) {
     obj = getDefault(obj, {});
     path = getDefault(path, []);
@@ -52,6 +57,7 @@
   module.exports = {
     getDefault: getDefault,
     pickRandom: pickRandom,
+    capitalize: capitalize,
     setIn: setIn,
     getIn: getIn
   };
