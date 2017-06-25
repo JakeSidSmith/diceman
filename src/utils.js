@@ -10,14 +10,6 @@
     return list[Math.floor(Math.random() * list.length)];
   }
 
-  function stripWhitespace (text) {
-    return text.replace(/(^\s+)|(\s+$)/g, '');
-  }
-
-  function stripDiceman (text) {
-    return text.replace(/^\/diceman/, '');
-  }
-
   function setIn (obj, path, value) {
     obj = getDefault(obj, {});
     path = getDefault(path, []);
@@ -60,8 +52,6 @@
   module.exports = {
     getDefault: getDefault,
     pickRandom: pickRandom,
-    stripWhitespace: stripWhitespace,
-    stripDiceman: stripDiceman,
     setIn: setIn,
     getIn: getIn
   };

@@ -12,6 +12,7 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
   var http = require('http');
   var responses = require('./responses');
   var utils = require('./utils');
+  var question = require('./question');
 
   var port = process.env.PORT || 5000;
 
@@ -24,45 +25,12 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
 
         var message = utils.getIn(json, ['item', 'message', 'message'], '');
 
-        if (message) {
-          message = utils.stripWhitespace(utils.stripDiceman(message));
-        }
+        var reply = question.getResponse(message);
 
-        if (message) {
-          var question;
-          var items = message.split(',');
-
-          var questionIndex = message.indexOf('?');
-
-          if (questionIndex >= 0) {
-            question = utils.stripWhitespace(message.substring(0, questionIndex + 1));
-          }
-
-          if (items.length) {
-            var finalItems = [];
-
-            for (var i = 0; i < items.length; i += 1) {
-              var strippedItem = utils.stripWhitespace(items[i]);
-              if (strippedItem && strippedItem.length) {
-                finalItems.push(strippedItem);
-              }
-            }
-            if (!finalItems.length) {
-              responses.errorResponse(response, 'No items supplied.');
-            } else if (finalItems.length === 1 && question && question === finalItems[0]) {
-              responses.successResponse(response, utils.pickRandom(['Yes', 'No']));
-            } else {
-              if (question && finalItems[0].indexOf(question) === 0) {
-                finalItems[0] = utils.stripWhitespace(finalItems[0].replace(question, ''));
-              }
-
-              responses.successResponse(response, utils.pickRandom(finalItems));
-            }
-          } else {
-            responses.errorResponse(response, 'No items supplied.');
-          }
+        if (reply.error) {
+          responses.errorResponse(response, reply.error);
         } else {
-          responses.errorResponse(response, 'No message supplied.');
+          responses.successResponse(response, reply.message);
         }
       });
 
@@ -70,7 +38,7 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
         console.log('End');
       });
     } else {
-      responses.getResponse(response);
+      responses.nonPostResponse(response);
     }
   });
 

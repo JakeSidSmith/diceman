@@ -24,7 +24,7 @@
     response.end();
   }
 
-  function getResponse (response) {
+  function nonPostResponse (response) {
     response.writeHead(200, {'Content-Type': 'text/html'});
     response.write('<!DOCTYPE html>');
     response.write('<html>');
@@ -41,7 +41,7 @@
   module.exports = {
     successResponse: successResponse,
     errorResponse: errorResponse,
-    getResponse: getResponse
+    nonPostResponse: nonPostResponse
   };
 
 })();
