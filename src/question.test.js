@@ -28,6 +28,7 @@
       });
 
       it('should answer yes or no questions', function () {
+        expect(question.getResponse('?')).toEqual({message: 'Yes'});
         expect(question.getResponse('Is this a yes or no question?')).toEqual({message: 'Yes'});
         expect(question.getResponse('   is this a yes or no question?  ')).toEqual({message: 'Yes'});
       });

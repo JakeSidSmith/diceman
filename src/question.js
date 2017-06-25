@@ -8,7 +8,7 @@
   var MATCHES_LEADING_AND_TRAILING_WHITESPACE = /(^\s+)|(\s+$)/g;
 
   var MATCHES_QUESTION_WITH_OPTIONS = /(.+?\?)(.+)/;
-  var MATCHES_QUESTION = /.+?\?$/;
+  var MATCHES_QUESTION = /.*?\?$/;
 
   var MATCHES_QUESTION_MARK = /\?/g;
   var MATCHES_OPTIONS_SEPARATOR = /\s*(?:,?\s*?(?:or|and)|,)\s*/g;
