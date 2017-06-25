@@ -22,6 +22,7 @@ curl --data '{"item": {"message": {"message": "this,is,a,message"}}}' http://loc
       request.on('data', function (data) {
         var json = JSON.parse(data.toString());
         console.log('JSON:', json);
+        console.log(utils.getIn(json, ['item', 'room']));
 
         var message = utils.getIn(json, ['item', 'message', 'message'], '');
 
