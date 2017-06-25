@@ -1,11 +1,13 @@
 {
   "name": "diceman",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Random Item Picker - HipChat Integration",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "lint": "eslint src/",
+    "tests": "jest",
+    "test": "npm run lint && npm run tests -- --coverage"
   },
   "repository": {
     "type": "git",
@@ -25,5 +27,13 @@
   "bugs": {
     "url": "https://github.com/JakeSidSmith/diceman/issues"
   },
-  "homepage": "https://github.com/JakeSidSmith/diceman"
+  "homepage": "https://github.com/JakeSidSmith/diceman",
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "eslint-config-jakesidsmith": "github:jakesidsmith/eslint-config-jakesidsmith#v2.2.0",
+    "jest": "20.0.4"
+  },
+  "engines": {
+    "node": "6.10.3"
+  }
 }
