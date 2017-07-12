@@ -11,7 +11,7 @@
   var MATCHES_QUESTION = /.*?\?$/;
 
   var MATCHES_QUESTION_MARK = /\?/g;
-  var MATCHES_OPTIONS_SEPARATOR = /\s*(?:,?\s*?(?:\bor\b|\band\b)|,)\s*/gi;
+  var MATCHES_OPTIONS_SEPARATOR = /\s*(?:,\s*(?:\bor\b|\band\b)|,|\bor\b)\s*/gi;
 
   function getResponse (message) {
     message = (message || '')
