@@ -1,6 +1,6 @@
 {
   "name": "diceman",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Random Item Picker - HipChat Integration",
   "main": "src/index.js",
   "scripts": {
