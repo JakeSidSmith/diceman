@@ -69,6 +69,22 @@
         expect(question.getResponse('one, two or three')).toEqual({message: 'Three'});
       });
 
+      it('should not separate by "and"', function () {
+        expect(question.getResponse('one and two or three')).toEqual({message: 'One and two'});
+
+        mockRandom(0.99);
+
+        expect(question.getResponse('one, two and three')).toEqual({message: 'Two and three'});
+      });
+
+      it('should not separate by "and" or "or" mid-word', function () {
+        expect(question.getResponse('Randy or George')).toEqual({message: 'Randy'});
+
+        mockRandom(0.99);
+
+        expect(question.getResponse('Randy, George')).toEqual({message: 'George'});
+      });
+
     });
 
   });
